@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerStates {Moving, Drawing};
+
 public class PlayerMovement : MonoBehaviour {
 
 	public float speed = 6f;
@@ -19,6 +21,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	public float turnSpeed;
 
+	public PlayerStates state;
+
 	void Awake()
 	{
 		anim = GetComponent<Animator> ();
@@ -34,6 +38,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	void FixedUpdate ()
 	{
+		
 		Move (h, v);
 		Animate (h, v);
 
@@ -41,6 +46,8 @@ public class PlayerMovement : MonoBehaviour {
 		{
 			Turn ();
 		}
+
+
 	}
 
 	void Move (float h, float v)
@@ -57,8 +64,11 @@ public class PlayerMovement : MonoBehaviour {
 
 	void Turn()
 	{
-		facing.transform.LookAt (transform.position + rigid.velocity);
-		transform.rotation = Quaternion.Slerp (transform.rotation, facing.transform.rotation, turnSpeed*Time.deltaTime);
+		//if (state = PlayerStates.Moving) 
+		{
+			facing.transform.LookAt (transform.position + rigid.velocity);
+			transform.rotation = Quaternion.Slerp (transform.rotation, facing.transform.rotation, turnSpeed * Time.deltaTime);
+		}
 	}
 
 	void Animate (float h, float v)
